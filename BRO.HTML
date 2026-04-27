@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 🌙</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);
+    color:white;
+    overflow:hidden;
+}
+
+/* screens */
+.screen{
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    padding:20px;
+    opacity:0;
+    transition:opacity 0.6s ease;
+}
+.active{
+    display:flex;
+    opacity:1;
+}
+
+/* text */
+h1{
+    font-size:30px;
+}
+p{
+    max-width:500px;
+    line-height:1.6;
+}
+
+/* button */
+button{
+    margin-top:25px;
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    background:linear-gradient(45deg,#ff4d6d,#ff758f);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* stars */
+.star{
+    position:fixed;
+    width:2px;
+    height:2px;
+    background:white;
+    animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+    from{opacity:0.2;}
+    to{opacity:1;}
+}
+
+/* no button */
+#noBtn{
+    position:absolute;
+}
+</style>
+</head>
+
+<body>
+
+<!-- START -->
+<div id="start" class="screen active">
+    <h1>Hey… 🌙</h1>
+    <p>
+    Not something big…<br>
+    just something soft…<br>
+    just something for you  
+    </p>
+    <button onclick="next()">Start 💖</button>
+</div>
+
+<!-- TEXT -->
+<div id="text" class="screen">
+    <h1 id="line"></h1>
+    <button onclick="next()">Continue</button>
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen">
+    <h1>Tell me honestly 😏</h1>
+    <p>Do you enjoy talking to me?</p>
+    <button onclick="next()">Yes 💖</button>
+    <button id="noBtn">No 😜</button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="screen">
+    <h1>Then stay…</h1>
+    <p id="finalText"></p>
+</div>
+
+<script>
+
+// CLEANED CONTENT (fixed grammar + flow)
+let lines=[
+"Some people come and go…",
+"But some people… just stay",
+"You are one of those people",
+"Not loud… not dramatic…",
+"In my low days…",
+"In my sadness…",
+"In my silence…",
+"Just there…",
+"And somehow… that feels enough",
+"You feel like peace",
+"Like silence that isn’t empty",
+"Like something I don’t have to explain",
+"And maybe…",
+"I don’t say it properly",
+"But I love having you in my life",
+"A lot 😌",
+"You’re the one who makes the world feel better…",
+"When I’m with others… I miss you",
+"When I’m with you… I feel complete",
+"You bring out the child in me…",
+"You take care… you listen… you stay",
+"And honestly…",
+"I don’t say this enough…",
+"But you matter… a lot 💖"
+];
+
+let index = 0;
+
+// navigation
+function next(){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+
+    if(index < lines.length){
+        document.getElementById("text").classList.add("active");
+        typeLine(lines[index]);
+        index++;
+    }
+    else if(index === lines.length){
+        document.getElementById("game").classList.add("active");
+        index++;
+    }
+    else{
+        document.getElementById("final").classList.add("active");
+        showFinal();
+    }
+}
+
+// typing effect FIXED
+function typeLine(text){
+    let el=document.getElementById("line");
+    el.innerHTML="";
+    let i=0;
+
+    function typing(){
+        if(i<text.length){
+            el.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing,30);
+        }
+    }
+    typing();
+}
+
+// FIXED no button (after DOM ready)
+window.onload = () => {
+    let noBtn=document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover",()=>{
+        noBtn.style.top=Math.random()*80+"%";
+        noBtn.style.left=Math.random()*80+"%";
+    });
+};
+
+// final
+function showFinal(){
+    document.getElementById("finalText").innerText=
+    "I don’t need a reason to stay…\n\n" +
+    "but if you ask me why…\n\n" +
+    "it’s you 💖";
+}
+
+// stars
+for(let i=0;i<60;i++){
+    let s=document.createElement("div");
+    s.className="star";
+    s.style.top=Math.random()*100+"vh";
+    s.style.left=Math.random()*100+"vw";
+    document.body.appendChild(s);
+}
+
+</script>
+
+</body>
+</html>
